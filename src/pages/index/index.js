@@ -1,5 +1,13 @@
+/*
+ * @Description: 
+ * @Author: lokep
+ * @Date: 2020-05-26 22:22:07
+ * @LastEditTime: 2020-05-27 01:27:30
+ */ 
 import React, { Component } from 'react';
 import './index.css'
+
+import Nav from '../../components/nav/index'
 
 class App extends Component {  
 
@@ -16,7 +24,7 @@ class App extends Component {
   render() {
     return (
       <div className="container">
-        this is the index page
+        <Nav />
       </div>
     );
   }

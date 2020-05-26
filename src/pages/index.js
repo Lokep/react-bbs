@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 
 
 class App extends Component {  
@@ -16,7 +15,9 @@ class App extends Component {
   }
   render() {
     return (
-      <img src={logo} alt=""/>
+      <div className="container">
+        this is the index page
+      </div>
     );
   }
 }

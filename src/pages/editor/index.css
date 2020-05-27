@@ -3,7 +3,7 @@
   border-left: 0;
   border-right: 0;
   box-shadow: none;
-  height: calc(100% - 125px);
+  height: calc(100% - 130px);
   max-width: 100vw;
 }
 
@@ -32,10 +32,13 @@
   border: none;
   outline: none;
 }
-
+.header-rightbar {
+  display: flex;
+  align-items: center;
+}
 
 .footer {
-  height: 45px;
+  height: 50px;
   overflow: hidden;
   display: flex;
   flex-direction: row-reverse;

@@ -4,7 +4,7 @@
  * @Date: 2020-05-27 21:15:03
  * @LastEditTime: 2020-05-28 00:14:56
  */
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import Editor from 'for-editor'
 import { Button, Upload, message, Popover, Avatar } from 'antd'
 
@@ -14,29 +14,12 @@ import { InboxOutlined, PictureOutlined, UserOutlined } from '@ant-design/icons'
 
 const { Dragger } = Upload;
 
-const props = {
-  name: 'file',
-  multiple: true,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
-
 const toolbar = {
   h1: true, // h1
   h2: true, // h2
   h3: true, // h3
   h4: true, // h4
-  img: true, // 图片
+  img: false, // 图片
   link: true, // 链接
   code: true, // 代码块
   preview: true, // 预览
@@ -48,25 +31,94 @@ const toolbar = {
   /* v0.2.3 */
   subfield: true, // 单双栏模式
 }
-
-const content = (
-  <Dragger {...props}>
-    <p className="ant-upload-drag-icon">
-      <InboxOutlined />
-    </p>
-    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-  </Dragger>
-)
-
+const config = {
+  name: 'file',
+  multiple: false,
+  data: {tes:'111'},
+  method: 'post',
+  accept: 'jpg,jpeg,png,gif',
+  action: 'http://localhost:8888/api/v1/upload',
+  showUploadList: false
+}
 export default class Edit extends Component {
+
+   $vm = React.createRef()
+
   constructor() {
     super()
     this.state = {
       value: '',
-      title: ''
+      title: '',
+      headImg: ''
     }
   }
 
+  upload = (info) => {
+    console.log(info)
+    console.log(info.file)
+    const { status } = info.file;
+    if (status !== 'uploading') {
+      const { code, data: headImg, message: msg } = info.fileList[0].response
+      if (code === 0) {
+        this.setState({
+          headImg
+        })
+        message.success(`${info.file.name} file uploaded successfully.`)
+      } else {
+        message.error(`${msg} file upload failed.`);
+      }
+    }
+  }
+  content = () => (
+    <Dragger {...config} onChange={this.upload}>
+      <div className="ant-upload-drag-icon">
+        { !this.state.headImg ? 
+          <Fragment>
+            <InboxOutlined /> 
+
+            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          </Fragment> : 
+          <img src={this.state.headImg}  alt="headImg" /> }
+      </div>
+      
+    </Dragger>
+  )
+  
+  render() {
+    const {
+      value,
+      title
+    } = this.state
+
+    return (
+      <div className="container">
+        <div className="header">
+          <input className="title" value={title} placeholder="请输入标题" onChange={e => this.handleTitle(e)} />
+          <div className="header-rightbar">
+            <Popover placement="bottomRight" title={"添加封面大图"} content={this.content} trigger="hover">
+              <PictureOutlined style={{ marginRight: '35px', fontSize: '30px', color: '#909090' }} />
+            </Popover>
+            <Avatar size="large" icon={<UserOutlined />} />
+          </div>
+        </div>
+        <Editor
+          value={value}
+          toolbar={toolbar}
+          addImg={this.editorAddImg}
+          onChange={value => this.handleChange(value)} />
+        <div className="footer">
+          <Button className="draft" onClick={this.showModal}>保存至草稿</Button>
+          <Button className="submit" type="primary" onClick={this.showModal}>发布</Button>
+        </div>
+
+
+      </div>
+    )
+  }
+  editorAddImg = ($file) => {
+    this.$vm.current.$img2Url($file.name, )
+    console.log($file)
+  }
   handleChange(value) {
     this.setState({
       value
@@ -84,37 +136,8 @@ export default class Edit extends Component {
   }
 
   submit() {
-    
+    this.$axios()
   }
 
-  render() {
-    const {
-      value,
-      title
-    } = this.state
-
-    return (
-      <div className="container">
-        <div className="header">
-          <input className="title" value={title} placeholder="请输入标题" onChange={e => this.handleTitle(e)} />
-          <div className="header-rightbar">
-            <Popover placement="bottomRight" title={"添加封面大图"} content={content} trigger="hover">
-              <PictureOutlined style={{ marginRight: '35px', fontSize: '30px', color: '#909090' }} />
-            </Popover>
-            <Avatar size="large" icon={<UserOutlined />} />
-          </div>
-        </div>
-        <Editor
-          value={value}
-          toolbar={toolbar}
-          onChange={value => this.handleChange(value)} />
-        <div className="footer">
-          <Button className="draft" onClick={this.showModal}>保存至草稿</Button>
-          <Button className="submit" type="primary" onClick={this.showModal}>发布</Button>
-        </div>
-
-
-      </div>
-    )
-  }
+  
 }

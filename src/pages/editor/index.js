@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: lokep
  * @Date: 2020-05-27 21:15:03
- * @LastEditTime: 2020-05-28 00:14:56
+ * @LastEditTime: 2020-05-29 00:33:57
  */
 import React, { Component, Fragment } from "react"
 import Editor from 'for-editor'
@@ -19,7 +19,7 @@ const toolbar = {
   h2: true, // h2
   h3: true, // h3
   h4: true, // h4
-  img: false, // 图片
+  img: true, // 图片
   link: true, // 链接
   code: true, // 代码块
   preview: true, // 预览
@@ -116,8 +116,16 @@ export default class Edit extends Component {
     )
   }
   editorAddImg = ($file) => {
-    this.$vm.current.$img2Url($file.name, )
     console.log($file)
+    let fileList = [$file];
+    if (fileList.length > 0) {
+        let file = fileList[0];
+        let formData = new FormData();
+        formData.append('uploadFile', file);
+　　　　//你的post接口，formData发送
+        this.$axios()
+　　　　　　
+    }
   }
   handleChange(value) {
     this.setState({

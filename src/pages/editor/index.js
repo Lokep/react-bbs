@@ -7,7 +7,7 @@
 import React, { Component, Fragment } from "react"
 import Editor from 'for-editor'
 import { Button, Upload, message, Popover, Avatar } from 'antd'
-
+import { upload as uploadNative } from '../../apis/upload'
 import './index.css'
 
 import { InboxOutlined, PictureOutlined, UserOutlined } from '@ant-design/icons';
@@ -40,9 +40,10 @@ const config = {
   action: 'http://localhost:8888/api/v1/upload',
   showUploadList: false
 }
-export default class Edit extends Component {
 
-   $vm = React.createRef()
+
+export default class Edit extends Component {
+  $vm = React.createRef()
 
   constructor() {
     super()
@@ -54,23 +55,29 @@ export default class Edit extends Component {
   }
 
   upload = (info) => {
+    const { status } = info.file;
     console.log(info)
     console.log(info.file)
-    const { status } = info.file;
     if (status !== 'uploading') {
-      const { code, data: headImg, message: msg } = info.fileList[0].response
+      const { code, data: imgUrl, message: msg } = info.fileList[0].response
       if (code === 0) {
-        this.setState({
-          headImg
-        })
         message.success(`${info.file.name} file uploaded successfully.`)
+        return imgUrl
       } else {
         message.error(`${msg} file upload failed.`);
       }
     }
   }
+
+  uploadHeadImg = (info) => {
+    let imgUrl = this.upload(info)
+    this.setState({
+      headImg: imgUrl
+    })
+  }
+  
   content = () => (
-    <Dragger {...config} onChange={this.upload}>
+    <Dragger {...config} onChange={this.uploadHeadImg}>
       <div className="ant-upload-drag-icon">
         { !this.state.headImg ? 
           <Fragment>
@@ -83,7 +90,7 @@ export default class Edit extends Component {
       
     </Dragger>
   )
-  
+
   render() {
     const {
       value,
@@ -102,9 +109,10 @@ export default class Edit extends Component {
           </div>
         </div>
         <Editor
+          ref={this.$vm}
           value={value}
           toolbar={toolbar}
-          addImg={this.editorAddImg}
+          addImg={($file) => this.editorAddImg($file)}
           onChange={value => this.handleChange(value)} />
         <div className="footer">
           <Button className="draft" onClick={this.showModal}>保存至草稿</Button>
@@ -115,17 +123,9 @@ export default class Edit extends Component {
       </div>
     )
   }
-  editorAddImg = ($file) => {
-    console.log($file)
-    let fileList = [$file];
-    if (fileList.length > 0) {
-        let file = fileList[0];
-        let formData = new FormData();
-        formData.append('uploadFile', file);
-　　　　//你的post接口，formData发送
-        this.$axios()
-　　　　　　
-    }
+  editorAddImg = async ($file) => {
+    const { data: imgUrl } = await uploadNative($file)
+    this.$vm.current.$img2Url($file.name, imgUrl)
   }
   handleChange(value) {
     this.setState({
@@ -144,8 +144,10 @@ export default class Edit extends Component {
   }
 
   submit() {
-    this.$axios()
+    
   }
 
-  
+  componentDidMount() {
+    
+  }
 }

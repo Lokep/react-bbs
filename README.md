@@ -22,3 +22,5 @@ npm install -D babel-plugin-import
 然后在全局引入 `@import '~antd/dist/antd.css';`
 
 接着就可以在项目中正常使用了
+
+通过axios上传文件图片，使用onUploadProgress监听上传进度

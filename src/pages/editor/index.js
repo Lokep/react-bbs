@@ -34,7 +34,6 @@ const toolbar = {
 const config = {
   name: 'file',
   multiple: false,
-  data: {tes:'111'},
   method: 'post',
   accept: 'jpg,jpeg,png,gif',
   action: 'http://localhost:8888/api/v1/upload',

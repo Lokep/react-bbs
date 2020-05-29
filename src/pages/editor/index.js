@@ -11,7 +11,7 @@ import { upload as uploadNative } from '../../apis/upload'
 import './index.css'
 
 import { InboxOutlined, PictureOutlined, UserOutlined } from '@ant-design/icons';
-
+import { submit } from '../../apis/article'
 const { Dragger } = Upload;
 
 const toolbar = {
@@ -138,12 +138,30 @@ export default class Edit extends Component {
     })
   }
 
-  showModal() {
+  showModal = () => {
     this.submit()
   }
 
-  submit() {
-    
+  async submit() {
+    const {
+      headImg,
+      title,
+      value: content,
+    } = this.state
+
+    const res = await submit({
+      headImg,
+      title,
+      content,
+      tags: `[{'id':1, 'name': '阅读'}]`,
+      userId: '000001',
+      msgStatus: 1
+    })
+
+    if (res.code === 0) {
+      message.success('发布成功')
+      // this.props.history.push({pathname: '/index'})
+    }
   }
 
   componentDidMount() {

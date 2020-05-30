@@ -148,19 +148,19 @@ export default class Edit extends Component {
       title,
       value: content,
     } = this.state
-
+    const tags = [{'id':1, 'name': '阅读'}]
     const res = await submit({
       headImg,
       title,
       content,
-      tags: `[{'id':1, 'name': '阅读'}]`,
+      tags: JSON.stringify(tags),
       userId: '000001',
       msgStatus: 1
     })
 
     if (res.code === 0) {
       message.success('发布成功')
-      // this.props.history.push({pathname: '/index'})
+      this.props.history.push({pathname: '/index'})
     }
   }
 

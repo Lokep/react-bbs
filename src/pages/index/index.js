@@ -9,7 +9,7 @@ import './index.css'
 
 import Nav from '../../components/nav/index'
 
-class App extends Component {  
+class Index extends Component {  
 
   componentWillReceiveProps(nextProps){
     
@@ -30,4 +30,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Index;

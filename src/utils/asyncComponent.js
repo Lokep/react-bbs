@@ -6,7 +6,7 @@ export default function asyncComponent(importComponent) {
       super(props);
 
       this.state = {
-        component: {}
+        component: null
       };
     }
 

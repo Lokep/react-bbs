@@ -1,11 +1,5 @@
-/*
- * @Description: 
- * @Author: lokep
- * @Date: 2020-05-26 22:22:07
- * @LastEditTime: 2020-05-27 01:27:30
- */ 
 import React, { Component } from 'react';
-import './index.css'
+import './index.scss'
 
 import Nav from '../../components/nav/index'
 
@@ -23,7 +17,7 @@ class Index extends Component {
   }
   render() {
     return (
-      <div className="container">
+      <div className="container" data-component="index">
         <Nav />
       </div>
     );

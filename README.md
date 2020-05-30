@@ -24,3 +24,7 @@ npm install -D babel-plugin-import
 接着就可以在项目中正常使用了
 
 通过axios上传文件图片，使用onUploadProgress监听上传进度
+
+
+create-my-app 默认会隐藏webpack配置
+1. npm run eject 命名不可逆，一旦配置文件暴露后就不可再隐藏

@@ -165,6 +165,6 @@ export default class Edit extends Component {
   }
 
   componentDidMount() {
-    
+    console.log(this.props)
   }
 }

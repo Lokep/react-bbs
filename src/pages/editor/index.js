@@ -36,7 +36,7 @@ const config = {
   multiple: false,
   method: 'post',
   accept: 'jpg,jpeg,png,gif',
-  action: 'http://localhost:8888/api/v1/upload',
+  action: 'http://121.196.17.194:8888/api/v1/upload',
   showUploadList: false
 }
 
